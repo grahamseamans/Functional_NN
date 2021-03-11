@@ -8,16 +8,12 @@ def head_tail(a):
 
 class layer:
     def __init__(self, dims, l_rate, avg_init, std_init):
-        self.l_rate = l_rate
-
         this_layer, next_layers = head_tail(dims)
-
         in_size = this_layer[0]
         out_size = this_layer[1]
-
+        self.l_rate = l_rate
         self.weights = np.random.normal(avg_init, std_init, (in_size, out_size))
         self.biases = np.random.normal(avg_init, std_init, (out_size,))
-
         if next_layers:
             self.next_layer = layer(next_layers, l_rate, avg_init, std_init)
         else:
