@@ -1,0 +1,99 @@
+so let's start by making a way simpler one.
+
+no batches
+one epoch
+
+one layer
+learn how to divide
+
+make data of random numbers
+rand1 / rand2 -> ans
+
+do train test split
+
+so then we need to define the functions for the math
+
+let's do it only one with sigmoid or relu?
+it's going to be a small net so let's go with sigmoid
+	we don't have enough nodes to sacrifice to the relu gods
+
+sigmoid it is.
+
+p = prediction
+d = data
+b = bias
+w = weights
+
+p = b + (w * d)
+
+c = cost
+t = truth
+
+c = p - t
+c = (b + (w * d) - t)
+
+
+dc = d(b + (w * d) - t)
+
+------------ from the previous net ----------------
+
+dE/db1 = dE/ds1*ds1/dnet1 * dnet1/db1
+dE/dw1 = dE/ds1*ds1/dnet1 * dnet1/dw1
+
+dE/db2 = dE/ds1*ds1/dnet1 * dnet1/ds2*ds2/dnet2 * dnet2/db2
+dE/dw2 = dE/ds1*ds1/dnet1 * dnet1/ds2*ds2/dnet2 * dnet2/dw2
+
+dE/db3 = dE/ds1*ds1/dnet1 * dnet1/ds2*ds2/dnet2 * dnet2/ds3*ds3/dnet3 * dnet3/db3
+dE/dw3 = dE/ds1*ds1/dnet1 * dnet1/ds2*ds2/dnet2 * dnet2/ds3*ds3/dnet3 * dnet3/dw3
+
+I think ds means derivative sigmoid?
+what the heck does net1 mean?
+	net means the input to layer x
+	so net1 is input to last layer
+	net0 is the prediciton
+
+out_x = output of layer x
+out = output of net
+w_x = weights of layer x
+in_x = input of layer x
+label = labeled data, target
+
+so the terms are:
+cost = (label - out)
+dE/ds = - cost # THIS MAY BE POSITIVE
+ds/dnet = out_x(1 - out_x)
+dnet/ds = w_x
+dnet/dwx = in_x
+dnet/dbx = 1
+
+----------------- end previous work ----------------------
+
+so we basically want this becasue this is a simple net.
+
+dE/db1 = dE/ds1*ds1/dnet1 * dnet1/db1
+dE/db1 = -cost * output_1(1 - output_1) * 1
+
+dE/dw1 = dE/ds1*ds1/dnet1 * dnet1/dw1
+dE/dw1 = -cost * output_1(1 - output_1) * 1
+
+
+If we're going to do this without batches we can just do it in a 
+single recursive function.
+
+We go down the net making predictions
+we return the derivative chain on the way back up
+
+
+class layer{
+  weights np arry
+  bias np array
+
+  train(takes in some stuff)
+    trains
+    returns the chain?
+
+  predict(takes in previous layers input)
+    runs through the net
+    return the output
+
+
