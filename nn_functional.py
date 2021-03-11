@@ -2,6 +2,7 @@ import random
 from function import layer
 import collections
 from scipy import stats
+import pprint
 
 datum = collections.namedtuple("datum", ["ans", "vect_in"])
 
@@ -37,11 +38,4 @@ if __name__ == "__main__":
     for data in test:
         prediction = net.predict(data.vect_in)[0]
         learning_data.append(prediction - data.ans)
-        """
-        if data.ans == round(prediction):
-            print("true", end="\t")
-        else:
-            print("false", end="\t")
-        print("pred: ", prediction, " ans: ", data.ans)
-        """
-    print(stats.describe(learning_data))
+    pprint(stats.describe(learning_data))
