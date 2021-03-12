@@ -1,7 +1,6 @@
 import random
 from layer import layer
 from scipy import stats
-from pprint import pprint
 from data_types import datum, dim
 
 train_size = 100000
@@ -22,7 +21,7 @@ def get_error(net, data):
 
 if __name__ == "__main__":
     # make net
-    net = layer(dims, 0.001, 0, 1)
+    net = layer(dims, 0.01, 0, 1)
 
     # train
     for data in division_examples(train_size):
@@ -32,4 +31,4 @@ if __name__ == "__main__":
     testing_data = [get_error(net, data) for data in division_examples(test_size)]
     print("Predicting a / b, where a <= b")
     print("Error = pred - ans")
-    pprint(stats.describe(testing_data))
+    print(stats.describe(testing_data))

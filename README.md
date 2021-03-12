@@ -2,7 +2,9 @@
 
 # Final Project - Functional Neural Net
 
-to run - `python nn_functional.py`
+To run - `python nn_functional.py`
+
+Requires numpy and scipy.
 
 ### Explanation
 
