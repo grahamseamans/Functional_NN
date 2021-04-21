@@ -1,31 +1,39 @@
 import numpy as np
-from scipy.special import expit as sigmoid
 
-
-def head_tail(a):
-    return a[0], a[1:]
+# from scipy.special import expit as sigmoid
 
 
 class layer:
-    def __init__(self, dims, l_rate, avg_init, std_init):
-        this_dim, next_dims = head_tail(dims)
-
+    def __init__(self, dims, l_rate):
+        this_dim, next_dims = self.head_tail(dims)
         if next_dims:
-            self.next_layer = layer(next_dims, l_rate, avg_init, std_init)
+            self.next_layer = layer(next_dims, l_rate)
         else:
             self.next_layer = None
-
         self.l_rate = l_rate
-        self.weights = np.random.normal(
-            avg_init, std_init, (this_dim.in_, this_dim.out_)
-        )
-        self.biases = np.random.normal(avg_init, std_init, (this_dim.out_,))
+        self.weights = self.get_prepped_rand((this_dim.in_, this_dim.out_))
+        self.biases = self.get_prepped_rand((this_dim.out_,))
+
+    def head_tail(self, a):
+        return a[0], a[1:]
+
+    def get_prepped_rand(self, shape):
+        return (np.random.rand(*shape) - 0.5) / 10
+
+    def display(self):
+        print(self.biases)
+        print(self.weights)
+        if self.next_layer:
+            self.next_layer.display()
 
     def process_layer(self, vect_in):
         out = vect_in @ self.weights
         out += self.biases
-        out = sigmoid(out)
+        out = self.sigmoid(out)
         return out
+
+    def sigmoid(self, n):
+        return 1 / (1 + np.exp(-n))
 
     def train_layer(self, prev_layer_chain_rule, layer_output, layer_input):
         chain_rule = prev_layer_chain_rule * (layer_output @ (1 - layer_output))
